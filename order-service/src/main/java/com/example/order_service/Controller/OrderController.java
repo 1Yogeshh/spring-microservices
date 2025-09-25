@@ -28,12 +28,14 @@ public class OrderController {
     @Autowired
     private ProductClient productClient;
 
+    // Create Order
     @PostMapping
     public String createOrder(@RequestBody Order order) {
         orderRepository.save(order);
         return "Order created successfully" + order.getId();
     }
 
+    // Get Order by ID with User and Product details
     @GetMapping("/{id}")
     public OrderResponse getOrderById(@PathVariable Long id) {
         Order order = orderRepository.findById(id).orElseThrow();

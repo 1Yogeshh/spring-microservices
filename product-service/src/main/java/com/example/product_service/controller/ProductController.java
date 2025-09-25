@@ -19,16 +19,19 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
+    // Get all products
     @GetMapping
     public List<Product> getProducts(){
         return productRepository.findAll();
     }
     
+    // Get product by ID
     @GetMapping("/{id}")
     public Product getProductById(@PathVariable Long id){
         return productRepository.findById(id).orElse(null);
     }
 
+    // Create a new product
     @PostMapping
     public String createProduct(@RequestBody Product product){
         productRepository.save(product);
