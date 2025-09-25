@@ -20,12 +20,10 @@ public class ProductController {
     private ProductRepository productRepository;
 
     @GetMapping
-    // public String getProduct(){
-    //     return productRepository.findAll().toString();
-    // }
     public List<Product> getProducts(){
         return productRepository.findAll();
     }
+    
     @GetMapping("/{id}")
     public Product getProductById(@PathVariable Long id){
         return productRepository.findById(id).orElse(null);
