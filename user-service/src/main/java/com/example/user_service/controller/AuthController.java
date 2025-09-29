@@ -6,9 +6,11 @@ import com.example.user_service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin
 public class AuthController {
 
     @Autowired
@@ -19,10 +21,12 @@ public class AuthController {
 
     // Register
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody AuthRequest request) {
+    public ResponseEntity<?> register(@RequestParam("username") String username,
+            @RequestParam("password") String password,
+            @RequestParam(value = "image", required = false) MultipartFile image) {
         try {
-            User user = userService.registerUser(request.getUsername(), request.getPassword());
-            return ResponseEntity.ok("User registered successfully");
+            User user = userService.registerUser(username, password, image);
+            return ResponseEntity.ok(user);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -40,12 +44,14 @@ public class AuthController {
         }
     }
 
+
     // DTO classes (manual constructors, getters, setters)
     public static class AuthRequest {
         private String username;
         private String password;
 
-        public AuthRequest() {}  // no-arg constructor
+        public AuthRequest() {
+        } // no-arg constructor
 
         public AuthRequest(String username, String password) {
             this.username = username;
@@ -72,7 +78,8 @@ public class AuthController {
     public static class AuthResponse {
         private String token;
 
-        public AuthResponse() {}  // no-arg constructor
+        public AuthResponse() {
+        } // no-arg constructor
 
         public AuthResponse(String token) {
             this.token = token;

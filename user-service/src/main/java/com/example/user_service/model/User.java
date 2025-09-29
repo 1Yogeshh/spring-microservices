@@ -20,4 +20,10 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    private String imageName;
+    private String imageType;
+    // @Lob
+    // private byte[] imageData;
+    private String imageUrl;
 }
