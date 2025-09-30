@@ -3,8 +3,12 @@ package com.example.user_service.controller;
 import com.example.user_service.model.User;
 import com.example.user_service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.user_service.service.UserService;
+import com.example.user_service.projection.UserSummary;
+
 
 import java.util.List;
 
@@ -16,10 +20,16 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
+
     // get all users
     @GetMapping
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public Page<User> getUsers(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "id") String sortBy) {
+        return userService.getallUsers(page, size, sortBy);
+        // return userRepository.findAll();
+
     }
 
     // get user by id
@@ -42,6 +52,16 @@ public class UserController {
                     return ResponseEntity.ok("User deleted successfully: " + user.getUsername());
                 })
                 .orElseGet(() -> ResponseEntity.status(404).body("User not found with id: " + id));
+    }
+
+    @GetMapping("/search")
+    public List<User> getSearchuser(@RequestParam(required = false) String username) {
+        return userService.searchUser(username);
+    }
+
+    @GetMapping("/summary")
+    public List<UserSummary> getUserSummaries() {
+        return userRepository.findAllUserSummeries();
     }
 
 }

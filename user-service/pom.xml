@@ -80,6 +80,13 @@
     <version>2.0.2</version>
 </dependency>
 
+<dependency>
+    <groupId>org.flywaydb</groupId>
+    <artifactId>flyway-core</artifactId>
+    <version>9.21.1</version> <!-- ya latest compatible -->
+</dependency>
+
+
 
 
         <!-- JWT (Latest stable 0.11.5) -->
